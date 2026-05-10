@@ -26,29 +26,29 @@ STOCKS = {
 
 # ── Dashboard: buy & sell watchlists ─────────────────────────────────────────
 TOP_BUYS = [
-    {"ticker": "NVDA",  "name": "AI chips, data centers",    "price": 924,  "chg": +2.1, "signal": "Strong Buy"},
-    {"ticker": "MSFT",  "name": "Cloud + AI leadership",     "price": 427,  "chg": +0.9, "signal": "Buy"},
-    {"ticker": "AMZN",  "name": "AWS growth resuming",       "price": 203,  "chg": +1.3, "signal": "Buy"},
-    {"ticker": "GOOGL", "name": "Search + Gemini AI",        "price": 172,  "chg": +0.7, "signal": "Buy"},
-    {"ticker": "LLY",   "name": "GLP-1 drug pipeline",      "price": 841,  "chg": +1.8, "signal": "Buy"},
-    {"ticker": "BRK.B", "name": "Defensive + value",         "price": 468,  "chg": +0.4, "signal": "Buy"},
-    {"ticker": "AAPL",  "name": "Services moat growing",     "price": 212,  "chg": +0.6, "signal": "Buy"},
-    {"ticker": "META",  "name": "Ad revenue + AI",           "price": 576,  "chg": +1.1, "signal": "Buy"},
-    {"ticker": "NEE",   "name": "Clean energy + AI power",   "price": 73,   "chg": +0.5, "signal": "Buy"},
-    {"ticker": "VOO",   "name": "Your core holding",         "price": 548,  "chg": +0.82,"signal": "Buy"},
+    {"ticker": "NVDA",  "name": "AI chips, data centers",    "price": 215.16, "chg": +1.8,  "signal": "Strong Buy"},
+    {"ticker": "MSFT",  "name": "Cloud + AI leadership",     "price": 415.17, "chg": +1.3,  "signal": "Buy"},
+    {"ticker": "AMZN",  "name": "AWS growth resuming",       "price": 272.66, "chg": +0.5,  "signal": "Buy"},
+    {"ticker": "GOOGL", "name": "Search + Gemini AI",        "price": 170.50, "chg": +0.7,  "signal": "Buy"},
+    {"ticker": "LLY",   "name": "GLP-1 drug pipeline",      "price": 841.00, "chg": +1.2,  "signal": "Buy"},
+    {"ticker": "BRK.B", "name": "Defensive + value",         "price": 468.00, "chg": +0.4,  "signal": "Buy"},
+    {"ticker": "AAPL",  "name": "Services moat growing",     "price": 293.41, "chg": +2.1,  "signal": "Buy"},
+    {"ticker": "META",  "name": "Ad revenue + AI",           "price": 609.53, "chg": +0.6,  "signal": "Buy"},
+    {"ticker": "NEE",   "name": "Clean energy + AI power",   "price": 73.20,  "chg": +0.5,  "signal": "Buy"},
+    {"ticker": "VOO",   "name": "Your core holding",         "price": 678.10, "chg": +0.82, "signal": "Buy"},
 ]
 
 TOP_SELLS = [
-    {"ticker": "TSLA",  "name": "Brand risk, margin squeeze",     "price": 248, "chg": -1.4, "signal": "Reduce"},
-    {"ticker": "INTC",  "name": "Lost AI chip war",               "price": 21,  "chg": -0.8, "signal": "Avoid"},
-    {"ticker": "DIS",   "name": "Streaming still unprofitable",   "price": 101, "chg": -0.5, "signal": "Reduce"},
-    {"ticker": "BABA",  "name": "Geopolitical + regulatory risk", "price": 87,  "chg": -2.1, "signal": "Avoid"},
-    {"ticker": "CVS",   "name": "Insurance losses deepening",     "price": 53,  "chg": -1.2, "signal": "Avoid"},
-    {"ticker": "MPW",   "name": "Healthcare REIT distress",       "price": 4,   "chg": -3.1, "signal": "Sell"},
-    {"ticker": "PFE",   "name": "Post-COVID revenue cliff",       "price": 27,  "chg": -0.6, "signal": "Reduce"},
-    {"ticker": "WBA",   "name": "Pharmacy model under threat",    "price": 9,   "chg": -1.8, "signal": "Sell"},
-    {"ticker": "NIO",   "name": "EV competition crushing margins","price": 3,   "chg": -2.4, "signal": "Avoid"},
-    {"ticker": "PARA",  "name": "Media disruption ongoing",      "price": 11,  "chg": -1.0, "signal": "Sell"},
+    {"ticker": "TSLA",  "name": "Valuation stretched post-rally",  "price": 427.99, "chg": +3.9,  "signal": "Reduce"},
+    {"ticker": "INTC",  "name": "Lost AI chip war",                "price": 21.30,  "chg": -0.8,  "signal": "Avoid"},
+    {"ticker": "DIS",   "name": "Streaming still unprofitable",    "price": 101.30, "chg": -0.5,  "signal": "Reduce"},
+    {"ticker": "BABA",  "name": "Geopolitical + regulatory risk",  "price": 87.10,  "chg": -2.1,  "signal": "Avoid"},
+    {"ticker": "CVS",   "name": "Insurance losses deepening",      "price": 53.00,  "chg": -1.2,  "signal": "Avoid"},
+    {"ticker": "MPW",   "name": "Healthcare REIT distress",        "price": 4.00,   "chg": -3.1,  "signal": "Sell"},
+    {"ticker": "PFE",   "name": "Post-COVID revenue cliff",        "price": 27.30,  "chg": -0.6,  "signal": "Reduce"},
+    {"ticker": "WBA",   "name": "Pharmacy model under threat",     "price": 9.00,   "chg": -1.8,  "signal": "Sell"},
+    {"ticker": "NIO",   "name": "EV competition crushing margins", "price": 3.50,   "chg": -2.4,  "signal": "Avoid"},
+    {"ticker": "PARA",  "name": "Media disruption ongoing",        "price": 11.00,  "chg": -1.0,  "signal": "Sell"},
 ]
 
 # ── News events with stock actions ───────────────────────────────────────────
