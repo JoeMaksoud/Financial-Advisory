@@ -45,7 +45,7 @@ def show():
                 f"""<div style="border:2px solid {border};background:{bg};border-radius:12px;padding:16px;margin-bottom:8px">
                   <div style="font-size:1.4rem;margin-bottom:6px">{meta['icon']}</div>
                   <div style="font-weight:600;font-size:0.95rem;margin-bottom:4px">{mood_name}</div>
-                  <div style="font-size:0.8rem;color:#555;margin-bottom:8px">{meta['desc']}</div>
+                  <div style="font-size:0.8rem;opacity:0.65;color:inherit;margin-bottom:8px">{meta['desc']}</div>
                   <span style="font-size:0.7rem;font-weight:600;color:{meta['border']}">{meta['tag']}</span>
                 </div>""",
                 unsafe_allow_html=True,
@@ -120,7 +120,7 @@ def show():
                 }
                 rbg, rfg = risk_colors.get(stock["risk"], ("#f3f4f6", "#374151"))
                 st.markdown(
-                    f"""<div style="background:#f9fafb;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+                    f"""<div style="background:rgba(128,128,128,0.06);border-radius:10px;padding:10px 12px;margin-bottom:8px">
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
                         <span style="font-weight:700">{stock['ticker']}</span>
                         <div style="display:flex;gap:8px;align-items:center">
@@ -129,7 +129,7 @@ def show():
                           <span style="font-size:0.75rem;color:#888">{stock['pct']}%</span>
                         </div>
                       </div>
-                      <div style="font-size:0.78rem;color:#555;line-height:1.45">{stock['rationale']}</div>
+                      <div style="font-size:0.78rem;opacity:0.65;color:inherit;line-height:1.45">{stock['rationale']}</div>
                     </div>""",
                     unsafe_allow_html=True,
                 )
