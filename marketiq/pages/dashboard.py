@@ -78,7 +78,7 @@ def _card(content, accent="rgba(29,158,117,0.6)"):
 
 
 def show():
-    st.markdown('<h2 style="font-size:1.5rem;font-weight:600;margin-bottom:6px;letter-spacing:-0.3px">Market Overview</h2>', unsafe_allow_html=True)
+    st.title("📈 Market Overview")
 
     # ── live prices for key indices via ETF proxies ───────────────────────────
     key_tickers = list({s["ticker"] for s in TOP_BUYS + TOP_SELLS}
