@@ -195,7 +195,7 @@ def show():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("📊 Investment Projection Calculator")
+    st.markdown('<h2 style="font-size:1.4rem;font-weight:500;margin-bottom:4px">📊 Projection Calculator</h2>', unsafe_allow_html=True)
     st.caption("Search any stock by name or ticker, set your amount, frequency, and period — then see projected returns.")
     st.markdown("---")
 

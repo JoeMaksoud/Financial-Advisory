@@ -193,7 +193,7 @@ def _fetch_rss_headlines():
 
 
 def show():
-    st.title("📰 News → Stock Recommendations")
+    st.markdown('<h2 style="font-size:1.4rem;font-weight:500;margin-bottom:4px">📰 News → Stock Recommendations</h2>', unsafe_allow_html=True)
     st.caption("Global events translated into specific buy / hold / avoid actions — updated daily.")
 
     # ── controls ──────────────────────────────────────────────────────────────

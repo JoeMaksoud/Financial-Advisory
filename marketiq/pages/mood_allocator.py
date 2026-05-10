@@ -58,7 +58,7 @@ def _mood_card(mood_name, meta, selected):
 
 
 def show():
-    st.title("🎯 Mood Allocator")
+    st.markdown('<h2 style="font-size:1.4rem;font-weight:500;margin-bottom:4px">🎯 My Investment Plan</h2>', unsafe_allow_html=True)
     st.caption("Tell us how you feel today and how much you want to invest — we'll build your plan.")
     st.markdown("---")
 
