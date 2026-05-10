@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="MarketIQ — AI Investment Advisor",
@@ -8,21 +7,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── Hide Streamlit chrome via st.markdown (this part works fine) ──────────────
+# ── Hide Streamlit chrome ─────────────────────────────────────────────────────
 st.markdown("""
 <style>
   #MainMenu, footer, header,
   [data-testid="stSidebar"],
   [data-testid="collapsedControl"],
   .stDeployButton { display:none !important; }
-  .block-container {
-    padding-top: 0 !important;
-    padding-bottom: 3rem !important;
-    max-width: 100% !important;
-  }
-  [data-testid="stMain"] > div { padding-top: 0 !important; }
+  .block-container { padding-top:0 !important; padding-bottom:3rem !important; max-width:100% !important; }
+  [data-testid="stMain"] > div { padding-top:0 !important; }
 
-  /* shared component styles used by all pages */
+  /* ── Shared component styles ── */
   .stMetric label { font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;opacity:0.55; }
   .stMetric [data-testid="metric-container"] {
     background:rgba(128,128,128,0.06) !important;
@@ -44,149 +39,189 @@ st.markdown("""
   .sent-fill  { height:100%;border-radius:6px; }
   .stButton > button { border-radius:10px !important;font-weight:500 !important;transition:box-shadow 0.15s,transform 0.1s !important; }
   .stButton > button:hover { transform:translateY(-1px) !important;box-shadow:0 4px 14px rgba(0,0,0,0.10) !important; }
+
+  /* ── Nav bar shell — always visible, sticky ── */
+  .miq-nav-shell {
+    position: sticky; top: 0; z-index: 9999;
+    background: var(--color-background-primary);
+    border-bottom: 0.5px solid rgba(128,128,128,0.18);
+    padding: 0 24px;
+    display: flex; align-items: center;
+    height: 56px; gap: 4px;
+    backdrop-filter: blur(12px);
+  }
+  .miq-brand {
+    display: flex; align-items: center; gap: 9px;
+    margin-right: 18px; flex-shrink: 0;
+  }
+  .miq-brand-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg,#1D9E75,#378ADD);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .miq-brand-name { font-size:14px;font-weight:600;color:#1D9E75;letter-spacing:-0.2px; }
+  .miq-brand-sub  { font-size:10px;color:var(--color-text-secondary);opacity:0.55; }
+  .miq-live {
+    display:flex;align-items:center;gap:5px;font-size:11px;
+    color:var(--color-text-secondary);opacity:0.6;margin-left:auto;
+  }
+  .miq-live-dot {
+    width:6px;height:6px;border-radius:50%;background:#1D9E75;
+    animation:miq-pulse 1.8s infinite;
+  }
+  @keyframes miq-pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+  /* ── Nav buttons rendered by Streamlit ── */
+  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] > div[data-testid="stVerticalBlockBorderWrapper"] {
+    padding: 0 !important;
+  }
+
+  /* Style nav buttons to look like proper nav items */
+  .nav-btn > div > div > div > button {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 7px 13px !important;
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    height: 36px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--color-text-secondary) !important;
+    white-space: nowrap !important;
+    width: auto !important;
+  }
+  .nav-btn > div > div > div > button:hover {
+    background: rgba(128,128,128,0.10) !important;
+    border-color: rgba(128,128,128,0.18) !important;
+    color: var(--color-text-primary) !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .nav-btn-active > div > div > div > button {
+    background: rgba(29,158,117,0.12) !important;
+    border-color: rgba(29,158,117,0.28) !important;
+    color: #1D9E75 !important;
+    font-weight: 600 !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 
+# ── Session state routing ─────────────────────────────────────────────────────
+if "page" not in st.session_state:
+    st.session_state.page = "dashboard"
 
-# ── Sticky nav via components.html (renders true HTML in an iframe-like block) -
-def render_nav(active: str):
-    pages = [
-        ("dashboard",   "📊", "Dashboard"),
-        ("news",        "📰", "News → Stocks"),
-        ("plan",        "🎯", "My Plan"),
-        ("projections", "📈", "Projections"),
-    ]
+PAGES = [
+    ("dashboard",   "📊", "Dashboard"),
+    ("news",        "📰", "News → Stocks"),
+    ("plan",        "🎯", "My Plan"),
+    ("projections", "📈", "Projections"),
+]
 
-    btns = ""
-    for key, icon, label in pages:
-        is_active = key == active
-        active_style = (
-            "background:rgba(29,158,117,0.12);color:#1D9E75;"
-            "border:1px solid rgba(29,158,117,0.28);font-weight:600;"
-        ) if is_active else (
-            "background:transparent;color:#888;border:1px solid transparent;"
-        )
-        icon_bg = "background:rgba(29,158,117,0.15);" if is_active else "background:rgba(128,128,128,0.10);"
-        dot = '<span style="width:5px;height:5px;border-radius:50%;background:#1D9E75;margin-left:4px;display:inline-block"></span>' if is_active else ""
-
-        btns += f"""
-        <a href="?page={key}" style="text-decoration:none">
-          <div style="display:flex;align-items:center;gap:7px;padding:7px 13px;
-               border-radius:10px;font-size:12px;cursor:pointer;
-               transition:all 0.15s;white-space:nowrap;{active_style}"
-               onmouseover="if(!this.classList.contains('act')){{this.style.background='rgba(128,128,128,0.10)';this.style.color='var(--color-text-primary)'}}"
-               onmouseout="if(!this.classList.contains('act')){{this.style.background='transparent';this.style.color='#888'}}">
-            <span style="width:26px;height:26px;border-radius:7px;display:flex;
-                  align-items:center;justify-content:center;font-size:13px;{icon_bg}">{icon}</span>
-            <span>{label}</span>
-            {dot}
-          </div>
-        </a>"""
-
-    html = f"""<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<style>
-  * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: transparent;
-    overflow: hidden;
-  }}
-  .nav {{
-    display: flex;
-    align-items: center;
-    height: 56px;
-    padding: 0 24px;
-    gap: 4px;
-    background: transparent;
-    border-bottom: 1px solid rgba(128,128,128,0.18);
-  }}
-  .brand {{
-    display: flex; align-items: center; gap: 9px;
-    margin-right: 18px; flex-shrink: 0;
-    text-decoration: none;
-  }}
-  .brand-icon {{
-    width: 32px; height: 32px; border-radius: 9px;
-    background: linear-gradient(135deg,#1D9E75 0%,#378ADD 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
-  }}
-  .brand-name {{ font-size:14px;font-weight:600;color:#1D9E75;letter-spacing:-0.2px; }}
-  .brand-sub  {{ font-size:10px;color:#888;letter-spacing:0.03em; }}
-  .nav-items  {{ display:flex;align-items:center;gap:3px;flex:1; }}
-  .nav-right  {{ display:flex;align-items:center;gap:10px;margin-left:auto; }}
-  .live       {{ display:flex;align-items:center;gap:5px;font-size:11px;color:#888; }}
-  .live-dot   {{ width:7px;height:7px;border-radius:50%;background:#1D9E75;
-                  animation:pulse 1.8s infinite; }}
-  @keyframes pulse {{ 0%,100%{{opacity:1}} 50%{{opacity:0.25}} }}
-</style>
-</head>
-<body>
-<div class="nav">
-  <a class="brand" href="?page=dashboard">
-    <div class="brand-icon">📈</div>
+# ── Sticky nav bar ────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="miq-nav-shell">
+  <div class="miq-brand">
+    <div class="miq-brand-icon">📈</div>
     <div>
-      <div class="brand-name">MarketIQ</div>
-      <div class="brand-sub">AI Investment Advisor</div>
+      <div class="miq-brand-name">MarketIQ</div>
+      <div class="miq-brand-sub">AI Investment Advisor</div>
     </div>
-  </a>
-  <div class="nav-items">{btns}</div>
-  <div class="nav-right">
-    <div class="live"><div class="live-dot"></div>Live prices</div>
   </div>
 </div>
-</body>
-</html>"""
+""", unsafe_allow_html=True)
 
-    # Render in a fixed-height iframe that sits at the very top
-    components.html(html, height=58, scrolling=False)
+# Render nav buttons using real Streamlit buttons (they actually work)
+# We overlay them on top of the nav shell using negative margin trick
+st.markdown("""
+<style>
+  /* Pull the button row up into the nav shell */
+  div[data-testid="stHorizontalBlock"]:first-of-type {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    background: var(--color-background-primary);
+    border-bottom: 0.5px solid rgba(128,128,128,0.18);
+    padding: 10px 24px 10px 220px;
+    margin-top: -56px;
+    backdrop-filter: blur(12px);
+    gap: 4px !important;
+  }
+  div[data-testid="stHorizontalBlock"]:first-of-type > div {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  div[data-testid="stHorizontalBlock"]:first-of-type button {
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    padding: 6px 13px !important;
+    height: 36px !important;
+    white-space: nowrap !important;
+    min-height: 0 !important;
+    line-height: 1 !important;
+    border: 1px solid rgba(128,128,128,0.18) !important;
+    color: var(--color-text-secondary) !important;
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  div[data-testid="stHorizontalBlock"]:first-of-type button:hover {
+    background: rgba(128,128,128,0.10) !important;
+    color: var(--color-text-primary) !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  /* Active page button — highlighted green */
+  div[data-testid="stHorizontalBlock"]:first-of-type div:nth-child(ACTIVE_IDX) button {
+    background: rgba(29,158,117,0.12) !important;
+    border-color: rgba(29,158,117,0.30) !important;
+    color: #1D9E75 !important;
+    font-weight: 600 !important;
+  }
+  /* Live dot area */
+  div[data-testid="stHorizontalBlock"]:first-of-type > div:last-child {
+    margin-left: auto !important;
+  }
+</style>
+""".replace("ACTIVE_IDX", str([p[0] for p in PAGES].index(st.session_state.page) + 1)),
+unsafe_allow_html=True)
 
-    # Now use CSS to make that iframe sticky
-    st.markdown("""
-    <style>
-      /* Target the iframe Streamlit wraps components.html in */
-      [data-testid="stCustomComponentV1"] iframe,
-      iframe[title="streamlit_components.v1.html"] {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 9999 !important;
-        display: block !important;
-        width: 100% !important;
-        border: none !important;
-        background: var(--color-background-primary) !important;
-        box-shadow: 0 1px 0 rgba(128,128,128,0.15) !important;
-      }
-      /* Also make the stCustomComponentV1 wrapper sticky */
-      [data-testid="stCustomComponentV1"] {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 9999 !important;
-        background: var(--color-background-primary) !important;
-        box-shadow: 0 1px 0 rgba(128,128,128,0.15) !important;
-        margin-bottom: 0 !important;
-      }
-    </style>
-    """, unsafe_allow_html=True)
+# Render actual clickable Streamlit buttons in a row
+nav_cols = st.columns([1, 1, 1, 1, 2])  # 4 buttons + spacer for live dot
+for i, (key, icon, label) in enumerate(PAGES):
+    with nav_cols[i]:
+        if st.button(f"{icon} {label}", key=f"nav_{key}", use_container_width=False):
+            st.session_state.page = key
+            st.rerun()
 
+with nav_cols[4]:
+    st.markdown(
+        '<div style="display:flex;align-items:center;gap:5px;justify-content:flex-end;'
+        'height:36px;font-size:11px;color:var(--color-text-secondary);opacity:0.6">'
+        '<div style="width:6px;height:6px;border-radius:50%;background:#1D9E75;'
+        'animation:miq-pulse 1.8s infinite"></div>Live prices</div>',
+        unsafe_allow_html=True
+    )
 
-# ── Route ─────────────────────────────────────────────────────────────────────
-page = st.query_params.get("page", "dashboard")
+st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-render_nav(page)
+# ── Route to page ─────────────────────────────────────────────────────────────
+current = st.session_state.page
 
-if page == "dashboard":
+if current == "dashboard":
     from pages.dashboard import show
     show()
-elif page == "news":
+elif current == "news":
     from pages.news_stocks import show
     show()
-elif page == "plan":
+elif current == "plan":
     from pages.mood_allocator import show
     show()
-elif page == "projections":
+elif current == "projections":
     from pages.projection import show
     show()
 else:
