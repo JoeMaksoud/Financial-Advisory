@@ -42,7 +42,13 @@ with st.sidebar:
     st.markdown("---")
     page = st.radio(
         "Navigate",
-        ["🏠 Dashboard", "📰 News → Stocks", "🎯 My Plan", "📊 Projections"],
+        [
+            "🏠 Dashboard",
+            "📰 News → Stocks",
+            "🎯 My Plan",
+            "📊 Projections",
+            "🧠 Smart Money",
+        ],
         label_visibility="collapsed",
     )
     st.markdown("---")
@@ -50,13 +56,13 @@ with st.sidebar:
 
 if page == "🏠 Dashboard":
     from pages.dashboard import show
-    show()
 elif page == "📰 News → Stocks":
     from pages.news_stocks import show
-    show()
 elif page == "🎯 My Plan":
     from pages.mood_allocator import show
-    show()
 elif page == "📊 Projections":
     from pages.projection import show
-    show()
+elif page == "🧠 Smart Money":
+    from pages.smart_money import show
+
+show()
